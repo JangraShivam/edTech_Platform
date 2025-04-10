@@ -37,7 +37,7 @@ exports.courseSchema = new mongoose.Schema({
     thumbNail : {
         type:String,
     },
-    tags : {
+    tag : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "Tag"
     },
