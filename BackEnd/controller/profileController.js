@@ -1,4 +1,4 @@
-const Course = require('../models/course');
+const { uploadImage } = require("../utils/imageUploader");
 const User = require('../models/profile');
 const Profile = require('../models/profile');
 
@@ -7,7 +7,6 @@ exports.updateProfile = async(req , res) => {
     try {
         //data fetch and validation
         const {gender, dateOfBirth="", about="", contactNo } = req.body;
-        const profileImg = req.files.profileImg;
         const userId = req.user.id;
         
         const userDetails = await User.findById(userId);
@@ -68,12 +67,12 @@ exports.deleteAccount = async(req, res) => {
     }
 }
 
-
+//get all user details
 exports.getAllUserDetails = async(req,res) =>{
     try {
         const userId = req.user.Id;
 
-        const userDetails = await User.findById(userId).populate("additionalDetails");
+        const userDetails = await User.findById(userId).populate("additionalDetails").exec();
 
         if(!userDetails){
             return res.status(400).json({
@@ -84,7 +83,8 @@ exports.getAllUserDetails = async(req,res) =>{
 
         return res.status(200).json({
             success:true,
-            message:"User Details fetched Successfully"
+            message:"User Details fetched Successfully",
+            data: userDetails,
         })
 
     } 
