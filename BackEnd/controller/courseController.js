@@ -1,7 +1,8 @@
 const Course = require('../models/course');
 const Category = require('../models/category');
 const User = require('../models/user');
-const uploadImage = require('../utils/imageUploader');
+const {uploadImage} = require('../utils/imageUploader');
+const { populate } = require('dotenv');
 require('dotenv').config();
 
 //create course 
@@ -64,7 +65,7 @@ exports.createCourse = async (req, res) => {
 			});
 		}
 		// Upload the Thumbnail to Cloudinary
-		const thumbnailImage = await uploadImageToCloudinary(
+		const thumbnailImage = await uploadImage(
 			thumbnail,
 			process.env.FOLDER_NAME
 		);
@@ -151,3 +152,45 @@ exports.getAllCourses = async (req, res) => {
 		});
 	}
 };
+
+// get course details
+exports.getCourseDetails = async(req, res) => {
+	try{
+		//get course Id
+		const {courseId} = req.body;
+
+		//find course details
+		const courseDetails = await Course.find({_id : courseId}).populate({
+			path:"instructor",
+			populate:{
+				path:"additionalDetails",
+			}
+		}).populate("category").populate("ratingAndReviews").populate({
+			path:"courseContent",
+			populate:{
+				path:"subSection"
+			}
+		}).exec();
+
+		if(!courseDetails){
+			return res.status(400).json({
+				success:false,
+				message:`Could not find the course with ${courseId}`
+			})
+		}
+
+		return res.status(200).json({
+			success : true,
+			message : "Course details fetched Successfully",
+			data : courseDetails
+		})
+
+	}
+	catch(error){
+		console.log(error);
+		return res.status(500).json({
+			success:false,
+			message:error.message
+		})
+	}
+}

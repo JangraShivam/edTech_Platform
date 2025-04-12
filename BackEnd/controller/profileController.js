@@ -1,5 +1,5 @@
 const { uploadImage } = require("../utils/imageUploader");
-const User = require('../models/profile');
+const User = require('../models/user');
 const Profile = require('../models/profile');
 
 //how can we schedule a requst or chrone job
@@ -10,7 +10,7 @@ exports.updateProfile = async(req , res) => {
         const userId = req.user.id;
         
         const userDetails = await User.findById(userId);
-
+        console.log(gender,dateOfBirth,about,contactNo);
         const updatedProfile = await Profile.findByIdAndUpdate({_id : userDetails.additionalDetails}, {
             gender,
             contactNo,
@@ -70,9 +70,9 @@ exports.deleteAccount = async(req, res) => {
 //get all user details
 exports.getAllUserDetails = async(req,res) =>{
     try {
-        const userId = req.user.Id;
-
-        const userDetails = await User.findById(userId).populate("additionalDetails").exec();
+        const userId = req.user.id;
+        console.log(userId);
+        const userDetails = await User.findById({_id:userId}).populate("additionalDetails").exec();
 
         if(!userDetails){
             return res.status(400).json({
@@ -95,3 +95,63 @@ exports.getAllUserDetails = async(req,res) =>{
         })
     }
 }
+
+exports.updateDisplayPicture = async (req, res) => {
+    try {
+      const displayPicture = req.files.displayPicture
+      const userId = req.user.id
+
+      console.log("Start uploading")
+      const image = await uploadImage(
+        displayPicture,
+        process.env.FOLDER_NAME,
+        1000,
+        1000
+      )
+
+      console.log(image)
+      const updatedProfile = await User.findByIdAndUpdate(
+        { _id: userId },
+        { image: image.secure_url },
+        { new: true }
+      )
+
+      console.log(updatedProfile)
+      res.send({
+        success: true,
+        message: `Image Updated successfully`,
+        data: updatedProfile,
+      })
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      })
+    }
+};
+  
+exports.getEnrolledCourses = async (req, res) => {
+    try {
+      const userId = req.user.id
+      const userDetails = await User.findOne({
+        _id: userId,
+      })
+        .populate("courses")
+        .exec()
+      if (!userDetails) {
+        return res.status(400).json({
+          success: false,
+          message: `Could not find user with id: ${userDetails}`,
+        })
+      }
+      return res.status(200).json({
+        success: true,
+        data: userDetails.courses,
+      })
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: error.message,
+      })
+    }
+};

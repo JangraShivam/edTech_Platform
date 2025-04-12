@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-exports.tagSchema = new mongoose.Schema({
+const tagSchema = new mongoose.Schema({
     name:{
         type:String,
         trim:true,

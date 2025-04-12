@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const Profile = require('../models/profile');
 const jwt = require('jsonwebtoken');
 const mailSender = require('../utils/mailSender');
-const { passwordUpdated } = require("../mail/templates/passwordUpdate");
+const { passwordUpdated } = require("../mail/templates/passwordUpdated");
 require('dotenv').config();
 
 //sendOtp
@@ -73,10 +73,10 @@ exports.sendOTP = async(req , res) => {
 exports.signUp = async(req, res) => {
     try{
         // data fetch from request
-        const {firstName,lastName,email,passowrd,confirmPassword , accountType, contactNo, otp} = req.body;
+        const {firstName,lastName,email,password,confirmPassword , accountType, contactNo, otp} = req.body;
 
         // data validate
-        if(!firstName || !lastName || !email || !passowrd || !confirmPassword || !otp){
+        if(!firstName || !lastName || !email || !password || !confirmPassword || !otp){
             return res.status(403).json({
                 success:false,
                 message:"All fields are required"
@@ -100,7 +100,7 @@ exports.signUp = async(req, res) => {
 
         //find most recent otp for user
         const recentOtp = await OTP.find({email}).sort({created_at:-1}).limit(1);
-        console.log(recentOtp);
+        console.log('rec',recentOtp, " ", otp);
 
         //validate otp
         if(recentOtp.length === 0){
@@ -110,7 +110,7 @@ exports.signUp = async(req, res) => {
                 message:"OTP not found"
             })
         }
-        else if(otp !== recentOtp.value){
+        else if(otp !== recentOtp[0].value){
             // invalid otp
             return res.status(400).json({
                 success:false,
@@ -119,7 +119,7 @@ exports.signUp = async(req, res) => {
         }
 
         // password hash
-        const hashedpassword = await bcrypt.hash(passowrd,10);
+        const hashedpassword = await bcrypt.hash(password,10);
 
         //create the user
         // Create the user
@@ -133,7 +133,7 @@ exports.signUp = async(req, res) => {
             lastName, 
             email, 
             contactNo,
-            passowrd: hashedpassword, 
+            password: hashedpassword, 
             accountType,
             approved: approved,
             additionalDetails : profileDetails._id, 
@@ -182,7 +182,7 @@ exports.login = async(req, res) => {
         }
 
         // match password in database  generate jwt token
-        if(await bcrypt.compare(password,existingUser.passowrd)){
+        if(await bcrypt.compare(password,existingUser.password)){
             const payload = {
                 email : existingUser.email,
                 id : existingUser._id,
@@ -193,7 +193,7 @@ exports.login = async(req, res) => {
             });
 
             existingUser.token = token;
-            existingUser.passowrd = undefined;
+            existingUser.password = undefined;
 
              // create cookie and send response
             const options = {

@@ -9,7 +9,7 @@ exports.createSubSection = async(req , res ) => {
         // data fetch and validation
         const {title, timeDuration, description, sectionId} = req.body;
         const file = req.files.videoFile;
-
+        console.log(title,file,timeDuration,description)
         if(!title || !timeDuration || !description || !file){
             return res.status(400).json({
                 success:false,
@@ -29,7 +29,7 @@ exports.createSubSection = async(req , res ) => {
         });
 
         //update section with subsection
-        const updatedSection = await Section.findByIdAndUpdate(sectionId, {$push : {subSections : newSubSection._id}}, {new : true}).populate(["subSections"]);
+        const updatedSection = await Section.findByIdAndUpdate(sectionId, {$push : {subSection : newSubSection._id}}, {new : true}).populate(["subSection "]);
 
         return res.status(200).json({
             success:true,
@@ -87,7 +87,7 @@ exports.updateSubSection = async(req , res ) => {
     }
 }
 
-exports.deleteSection = async(req , res ) => {
+exports.deleteSubSection = async(req , res ) => {
     try {
         // data fetching and validation
         const {sectionId,subSectioId} = req.body;

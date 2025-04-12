@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mailSender = require('../utils/mailSender');
 const emailTemplate = require("../mail/templates/emailVerificationTemplate");
 
-exports.OTPSchema = new mongoose.Schema({
+const OTPSchema = new mongoose.Schema({
     email : {
         type : String,
         required:true,
@@ -37,7 +37,7 @@ OTPSchema.pre("save", async function(next){
 
 	// Only send an email when a new document is created
 	if (this.isNew) {
-		await sendVerificationEmail(this.email, this.otp);
+		await sendVerificationEmail(this.email, this.value);
 	}
 	next();
 })

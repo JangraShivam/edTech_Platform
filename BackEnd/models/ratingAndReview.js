@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-exports.ratingAndReviewSchema = new mongoose.Schema({
+const ratingAndReviewSchema = new mongoose.Schema({
     user : {
         type : mongoose.Schema.Types.ObjectId,
         ref : "User",

@@ -5,7 +5,7 @@ exports.createCategory = async(req , res) => {
     try{
         // fetch data
         const {name,description} = req.body;
-
+		console.log('inside handler')
         //validation
         if(!name || !description){
             return res.status(400).json({
@@ -13,7 +13,7 @@ exports.createCategory = async(req , res) => {
                 message:"All fields are required"
             })
         }
-
+		console.log('inside handler')
         // create entry in db
         const categoryDetails = await Category.create({name:name, description:description});
         console.log(categoryDetails);
@@ -35,11 +35,10 @@ exports.createCategory = async(req , res) => {
 exports.getAllCategory = async(req, res) =>{
     try{
         const allCategories = await Category.find({},{name:true, description:true});
-
         return res.status(200).json({
             success:true,
             message:"all Category fetched successfully",
-            alltags
+            allCategories
         })
     }
     catch(error){

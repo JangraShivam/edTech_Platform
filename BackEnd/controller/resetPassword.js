@@ -51,16 +51,16 @@ exports.resetPasswordToken = async(req , res) => {
 exports.resetPassword = async(req, res) => {
     try{
         // data fetch
-        const {token,password, newPassword} = req.body;
+        const {token,password, confirmPassword} = req.body;
         // valdation
-        if(!token || !password || !newPassword){
+        if(!token || !password || !confirmPassword){
             return res.status(401).json({
                 success:false,
                 message:"All fields are required"
             })
         }
 
-        if(password !== newPassword){
+        if(password !== confirmPassword){
             return res.json({
                 success:false,
                 message :"Passwords do not match"

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-exports.courseProgressSchema = new mongoose.Schema({
+const courseProgressSchema = new mongoose.Schema({
     courseId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Course"

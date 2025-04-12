@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-exports.sectionSchema = new mongoose.Schema({
+const sectionSchema = new mongoose.Schema({
     sectionName:{
         type:String,
     },
-    subSections : [
+    subSection : [
         {
             type : mongoose.Schema.Types.ObjectId,
             ref : "SubSection"

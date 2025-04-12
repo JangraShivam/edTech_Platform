@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-exports.courseSchema = new mongoose.Schema({
+const courseSchema = new mongoose.Schema({
     courseName:{
         type:String,
         required:true,
