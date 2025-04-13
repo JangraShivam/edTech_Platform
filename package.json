@@ -1,0 +1,18 @@
+{
+  "name": "edtech_platform",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "BackEnd": "npm run dev --prefix BackEnd",
+    "FrontEnd": "npm run dev --prefix FrontEnd",
+    "dev": "concurrently -n \"BackEnd,FrontEnd\" -c \"blue,green\" \"npm run BackEnd\" \"npm run FrontEnd\" "
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "concurrently": "^9.1.2",
+    "react-type-animation": "^3.2.0"
+  }
+}
