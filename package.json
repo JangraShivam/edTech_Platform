@@ -12,7 +12,12 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.6.1",
+    "axios": "^1.8.4",
     "concurrently": "^9.1.2",
+    "dotenv": "^16.5.0",
+    "react-hot-toast": "^2.5.2",
+    "react-redux": "^9.2.0",
     "react-type-animation": "^3.2.0"
   }
 }
