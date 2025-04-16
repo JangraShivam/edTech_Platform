@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 import NavBar from './components/NavBar/navbar'
 import { Toaster } from 'react-hot-toast'
+import ForgotPassword from './pages/forgotPassword'
 function App() {
   
 
@@ -16,6 +17,7 @@ function App() {
           <Route path='/' element={<Home/>} />
           <Route path='/login' element={<Login/>}></Route>
           <Route path='/signup' element={<SignUp/>}/>
+          <Route path='/ForgotPassword' element={<ForgotPassword></ForgotPassword>}/>
         </Routes>
         <Toaster/>
       </div>

@@ -4,7 +4,7 @@ import Logo from '../../assets/Logo/Logo-Full-Light.png'
 import { useSelector } from "react-redux";
 import { useLocation, } from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import ProfileDropDown from "../auth/profiledropdown";
+// import ProfileDropDown from "../auth/profiledropdown";
 import { useEffect, useState } from "react";
 import { apiConnector } from "../../services/apiConnector";
 import { categories } from "../../services/api";

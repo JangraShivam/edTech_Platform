@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { GoEye } from "react-icons/go";
 import { GoEyeClosed } from "react-icons/go";
+import { Link } from "react-router-dom";
 
 function LoginForm(){
 
@@ -22,7 +23,7 @@ function LoginForm(){
 
                 <GoEyeClosed onClick={() => setShowPassword(false)} className={`absolute text-richblack-200 bottom-4 text-[25px] right-4 ${!showPassword ? 'hidden' : 'visible'}`} />
 
-                <p className="absolute -bottom-6 text-blue-100 right-0 text-xs">Forgot password?</p>
+                <Link to={'/ForgotPassword'}><p className="absolute -bottom-6 text-blue-100 right-0 text-xs">Forgot password?</p></Link>
             </div>
 
             <button className='w-full text-center bg-yellow-50 py-4 rounded-md font-bold mt-10'>Sign in</button>
